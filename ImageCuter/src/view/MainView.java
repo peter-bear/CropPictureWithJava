@@ -294,15 +294,20 @@ public class MainView extends JFrame {
 	//output image and save it to my computer
 	protected void outputFile(JTextPane textPane, JFileChooser jfc) {
 		// TODO Auto-generated method stub
-
+		String format="";
 		//check the accessibility of file address
 		String outputAddressString = jfc.getSelectedFile().getAbsolutePath();
 		if(outputAddressString.length() <4) {			
 			outputAddressString += ".png";
-	
-		}else if(!outputAddressString.substring(outputAddressString.length()-4).equals(".png") ||  !outputAddressString.substring(outputAddressString.length()-4).equals(".jpg")) {
-			JOptionPane.showConfirmDialog(null, "Please End The File With PNG or JPG");
+			format = "PNG";
+		}else if(outputAddressString.substring(outputAddressString.length()-4).equals(".png")) {
+			format ="PNG";	
+		}else if(outputAddressString.substring(outputAddressString.length()-4).equals(".jpg")){
+			format ="JPG";
+		}else {
+			JOptionPane.showConfirmDialog(null, "Please End The File With Image Format");
 			outputAddressString =  outputAddressString.subSequence(0, outputAddressString.length()-4) + ".png";
+			format = "PNG";
 		}
 		
 		
@@ -312,12 +317,12 @@ public class MainView extends JFrame {
 		File outputFile = new File(outputAddressString);
 		try {
 			if(outputFile.createNewFile()) {
-				ImageIO.write(outputImg, "PNG", outputFile);
+				ImageIO.write(outputImg, format, outputFile);
 			}else {
 				new JOptionPane();
 				int choice = JOptionPane.showConfirmDialog(null, "This File Already Exist! Do you want to continue?");
 				if(choice == JOptionPane.YES_OPTION)
-					ImageIO.write(outputImg, "PNG", outputFile);
+					ImageIO.write(outputImg, format, outputFile);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
